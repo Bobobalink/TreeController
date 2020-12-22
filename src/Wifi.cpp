@@ -3,8 +3,8 @@
 #include <ESP8266WiFi.h>
 #include "OLED.h"
 
-#define STASSID "The Fishbowl"
-#define STAPSK  "Honors 2077"
+#define STASSID "The Kale House"
+#define STAPSK  "Time for a walk"
 
 const char* ssid = STASSID;
 const char* password = STAPSK;
@@ -36,7 +36,7 @@ void loopWifi() {
     addStatusMessage("Connection lost!");
     WiFi.reconnect();
   } else {
-    if(millis() - lastMessTime > 5000) { // don't spam the log, but keep the IP address fresh in it
+    if(millis() - lastMessTime > 10000) { // don't spam the log, but keep the IP address fresh in it
       strcpy(conMess, "IP: ");
       strcat(conMess, WiFi.localIP().toString().c_str());
       addStatusMessage(conMess);

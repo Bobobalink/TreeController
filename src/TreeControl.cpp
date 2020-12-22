@@ -11,11 +11,11 @@
 void setup() {
   setupOLED();
 
+  setupAnimation();
+
   setupWifi();
   
   setupOTA();
-
-  setupAnimation();
 
   setupWebserver();
 

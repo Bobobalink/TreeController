@@ -21,6 +21,13 @@ void blendAnimUpdate(const AnimationParam& param) {
   strip.SetPixelColor(param.index, updatedColor);
 }
 
+void turnStripOff(int blendTimeMs) {
+  animator.StopAll();
+  for(int i = 0; i < pixelCount; i++) {
+    setPixelTo(i, RgbColor(0), blendTimeMs);
+  }
+}
+
 void setPixelTo(int pixel, RgbColor color, int blendTimeMs) {
   if(!animator.IsAnimationActive(pixel)) {
     pixelColors[pixel].startingColor = pixelColors[pixel].endingColor;

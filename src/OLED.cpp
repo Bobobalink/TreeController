@@ -20,21 +20,12 @@ void setupOLED() {
   memset(curMessages, 0, sizeof(char) * NUM_TEXT_ROWS * (NUM_TEXT_COLS + 1)); // make sure the message buffer is actually empty
 }
 
-uint8_t spinnerState = 0;
-uint8_t spinnerSubState = 0;
+uint16_t spinnerState = 0;
 char spinnerStates[] = {'-', '\\', '|', '/'};
-
 void addBusySpinner() {
-  if(spinnerSubState == 256) {
-    spinnerSubState = 0;
     spinnerState++;
-    if(spinnerState == 3)
-      spinnerState = 0;
-    
-    oled.drawChar(120, 0, spinnerStates[spinnerState], SSD1306_WHITE, SSD1306_BLACK, 1);
+    oled.drawChar(120, 0, spinnerStates[(spinnerState >> 6) & 0x3], SSD1306_WHITE, SSD1306_BLACK, 1);
     oled.display();
-  }
-  spinnerSubState++;
 }
 
 // adds a status message to the screen, scrolling the old ones up

@@ -1,5 +1,6 @@
 #include "OTA.h"
 #include "OLED.h"
+#include "AnimationManager.h"
 
 #include <ArduinoOTA.h>
 
@@ -12,6 +13,8 @@ void setupOTA() {
   ArduinoOTA.setPassword("dasBlinkenLightsen");
 
   ArduinoOTA.onStart([]() {
+    strip.ClearTo(RgbColor(0));
+    strip.Show();
     addStatusMessage("Starting OTA update");
   });
   

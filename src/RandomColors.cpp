@@ -1,5 +1,5 @@
 #include "RandomColors.h"
-
+#include "OLED.h"
 #include "AnimationManager.h"
 
 int16_t nextColorAnimation;
@@ -10,7 +10,7 @@ void pickRandom(AnimationParam param)
     float luminance = 0.4;
     
     // pick random count of pixels to animate
-    uint16_t count = random(4);
+    uint16_t count = random(6);
     while (count > 0)
     {
       // pick a random pixel
@@ -29,13 +29,13 @@ void pickRandom(AnimationParam param)
       }
     }
 
-    animator.ChangeAnimationDuration(nextColorAnimation, random(7));
+    animator.ChangeAnimationDuration(nextColorAnimation, random(7) + 5);
     animator.RestartAnimation(nextColorAnimation); // start a new animation to do this again
   }
 }
 
 void enableRandomColors() {
-  nextColorAnimation = registerAnimation(pickRandom, random(7));
+  nextColorAnimation = registerAnimation(pickRandom, random(7) + 5);
 }
 
 void disableRandomColors() {

@@ -18,6 +18,7 @@ struct LerpState
     RgbColor endingColor;
 };
 
+void turnStripOff(int blendTimeMs);
 void setPixelTo(int pixel, RgbColor color, int blendTimeMs);
 int16_t registerAnimation(AnimUpdateCallback callback, int durationMs);
 
