@@ -7,8 +7,6 @@ int16_t nextColorAnimation;
 void pickRandom(AnimationParam param)
 {
   if(param.state == AnimationState_Completed) {
-    float luminance = 0.4;
-    
     // pick random count of pixels to animate
     uint16_t count = random(6);
     while (count > 0)
@@ -22,11 +20,9 @@ void pickRandom(AnimationParam param)
       uint16_t fadeTime = random(300, 900);
 
       if(!animator.IsAnimationActive(pixel)) {
-        setPixelTo(pixel, HslColor(random(360) / 360.0f, 1.0f, luminance), fadeTime);
-        count--;
-      } else {
-        yield(); // make sure we don't stall out the wifi stack and stuff while waiting for an LED to be free
+        setPixelTo(pixel, HsbColor(random(360) / 360.0f, 1.0f, 0.2f), fadeTime);
       }
+      count--;
     }
 
     animator.ChangeAnimationDuration(nextColorAnimation, random(7) + 5);
