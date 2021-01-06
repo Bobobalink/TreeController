@@ -1,0 +1,23 @@
+.videoViewers {
+    display: flex;
+}
+.videoViewer {
+    width: 50%;
+    padding: 2px;
+}
+
+label {
+    padding-right: 8px;
+}
+
+.rangeLabel {
+    padding-right: 0px;
+    padding-left: 0px;
+    display: inline-block;
+}
+
+.valueDisplay {
+    padding-left: 8px;
+    padding-right: 8px;
+    display: inline-block;
+}

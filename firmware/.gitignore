@@ -3,9 +3,3 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-.idea/
-.travis.yml
-cmake-build-heltec_wifi_kit_8/
-CMakeLists*
-__pycache__/
-cmake-build-debug/

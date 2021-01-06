@@ -1,22 +1,24 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
 {
     "configurations": [
         {
-            "name": "!!! WARNING !!! AUTO-GENERATED FILE, PLEASE DO NOT MODIFY IT AND USE https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags"
-        },
-        {
-            "name": "Win32",
+            "name": "PlatformIO",
             "includePath": [
-                "c:/Users/Grey/Documents/TreeController/include",
-                "c:/Users/Grey/Documents/TreeController/src",
+                "c:/Users/Grey/Documents/TreeController/firmware/include",
+                "c:/Users/Grey/Documents/TreeController/firmware/src",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WebServer/src",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ArduinoOTA",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266mDNS/src",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/LittleFS/src",
-                "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/NeoPixelBus/src",
-                "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/Adafruit SSD1306",
-                "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/Adafruit GFX Library",
-                "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/Adafruit BusIO",
+                "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/NeoPixelBus/src",
+                "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/Adafruit SSD1306",
+                "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/Adafruit GFX Library",
+                "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/Adafruit BusIO",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/SPI",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/Wire",
                 "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include",
@@ -52,17 +54,17 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "c:/Users/Grey/Documents/TreeController/include",
-                    "c:/Users/Grey/Documents/TreeController/src",
+                    "c:/Users/Grey/Documents/TreeController/firmware/include",
+                    "c:/Users/Grey/Documents/TreeController/firmware/src",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WebServer/src",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ArduinoOTA",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266mDNS/src",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/ESP8266WiFi/src",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/LittleFS/src",
-                    "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/NeoPixelBus/src",
-                    "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/Adafruit SSD1306",
-                    "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/Adafruit GFX Library",
-                    "c:/Users/Grey/Documents/TreeController/.pio/libdeps/heltec_wifi_kit_8/Adafruit BusIO",
+                    "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/NeoPixelBus/src",
+                    "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/Adafruit SSD1306",
+                    "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/Adafruit GFX Library",
+                    "c:/Users/Grey/Documents/TreeController/firmware/.pio/libdeps/heltec_wifi_kit_8/Adafruit BusIO",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/SPI",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/libraries/Wire",
                     "C:/Users/Grey/.platformio/packages/framework-arduinoespressif8266/tools/sdk/include",
@@ -97,7 +99,7 @@
                 ]
             },
             "defines": [
-                "PLATFORMIO=50003",
+                "PLATFORMIO=50004",
                 "ESP8266",
                 "ARDUINO_ARCH_ESP8266",
                 "ARDUINO_ESP8266_HELTEC_WIFI_KIT_8",
@@ -115,7 +117,6 @@
                 "VTABLES_IN_FLASH",
                 ""
             ],
-            "intelliSenseMode": "gcc-x64",
             "cStandard": "c99",
             "cppStandard": "c++11",
             "compilerPath": "C:/Users/Grey/.platformio/packages/toolchain-xtensa/bin/xtensa-lx106-elf-gcc.exe",

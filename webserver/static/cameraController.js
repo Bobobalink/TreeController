@@ -3,6 +3,8 @@ const imgElement = document.getElementById("imageCap");
 const audioSelect = document.querySelector('select#audioSource');
 const videoSelect = document.querySelector('select#videoSource');
 const captureButton = document.getElementById("capPic");
+const sendSettingsButton = document.getElementById("getSettings");
+const settingsDiv = document.getElementById("cameraSettings");
 
 let mediaStreamTrack;
 let imageCapture;
@@ -59,6 +61,7 @@ function gotStream(stream) {
   mediaStreamTrack = stream.getVideoTracks()[0];
   imageCapture = new ImageCapture(mediaStreamTrack);
   console.log(imageCapture);
+  makeSettings(mediaStreamTrack.getCapabilities(), mediaStreamTrack.getSettings());
 }
 
 function handleError(error) {
@@ -66,6 +69,7 @@ function handleError(error) {
 }
 
 captureButton.addEventListener('click', capture);
+sendSettingsButton.addEventListener('click', putSettings);
 
 function capture() {
     console.log('capturing image');
@@ -75,6 +79,104 @@ function capture() {
             imgElement.onload = () => {
                 URL.revokeObjectURL(this.src);
             }
+            let xhttp = new XMLHttpRequest();
+            xhttp.open('PUT', 'putBlob', true);
+            xhttp.send(blob);
         })
         .catch(error => console.error('takePhoto() error:', error));
+}
+
+function putSettings() {
+    console.log('putting image settings');
+    let out = {};
+    out.vidCap = mediaStreamTrack.getCapabilities();
+    out.vidSet = mediaStreamTrack.getSettings();
+    imageCapture.getPhotoCapabilities().then((val) => {out.photoCap = val}).then(() => {
+    imageCapture.getPhotoSettings().then((val) => {out.photoSet = val}).then(() => {
+        let xhttp = new XMLHttpRequest();
+        xhttp.open('PUT', 'putBlob', true);
+        xhttp.setRequestHeader("Content-type", "application/json")
+        xhttp.send(JSON.stringify(out));
+    })});
+}
+
+function makeSettings(capabilities, settings) {
+    settingsDiv.innerText = ''; // clear all the old settings
+    for(const name in capabilities) {
+        if(!capabilities.hasOwnProperty(name))
+            continue;
+        const limits = capabilities[name];
+        if(typeof limits === 'string') {
+            // skip it because it's some weird config id thingy
+        } else if(Array.isArray(limits)) {
+            // arrays give options, so make a dropdown
+            let nameLabel = document.createElement('label');
+            nameLabel.for = 'select_' + name;
+            nameLabel.innerText = name;
+
+            let selectItem = document.createElement("select");
+            selectItem.id = 'select_' + name;
+            for(const i in limits) {
+                if(!limits.hasOwnProperty(i))
+                    continue;
+                let option = document.createElement("option");
+                option.value = limits[i];
+                option.innerText = limits[i];
+                if(limits[i] === settings[name]) {
+                    option.selected = true;
+                }
+                selectItem.appendChild(option);
+            }
+            settingsDiv.appendChild(nameLabel);
+            settingsDiv.appendChild(selectItem);
+            settingsDiv.appendChild(document.createElement('br'));
+        } else {
+            // it's probably an object with a min and max for a numerical value
+            if(limits.hasOwnProperty('max') && limits.hasOwnProperty('min')) {
+                //create a slider doodad for a numerical value
+                let nameLabel = document.createElement('label');
+                nameLabel.innerText = name;
+                nameLabel.for = 'select_' + name;
+                nameLabel.className = 'nameLabel';
+
+                let lowLabel = document.createElement('span');
+                lowLabel.innerText = (+limits['min'].toFixed(2)).toString();
+                lowLabel.className = 'rangeLabel';
+
+                let slider = document.createElement('input');
+                slider.id = 'select_' + name;
+                slider.type = 'range';
+                slider.min = limits['min'];
+                slider.max = limits['max'];
+                slider.value = settings[name];
+                slider.className = 'slider';
+                if(limits.hasOwnProperty('step')) {
+                    slider.step = limits['step'];
+                } else { // default to a step of 1
+                    slider.step = '1';
+                }
+
+                let highLabel = document.createElement('span');
+                highLabel.innerText = (+limits['max'].toFixed(2)).toString();
+                highLabel.className = 'rangeLabel';
+
+                let curLabel = document.createElement('span');
+                curLabel.innerText = (+settings[name].toFixed(2)).toString();
+                curLabel.id = 'valueDisplay_' + name;
+                curLabel.className = 'valueDisplay';
+
+
+                slider.oninput = (event) => {
+                    curLabel.innerText = (+slider.valueAsNumber.toFixed(2)).toString();
+                };
+
+                settingsDiv.appendChild(nameLabel);
+                settingsDiv.appendChild(lowLabel);
+                settingsDiv.appendChild(slider);
+                settingsDiv.appendChild(highLabel);
+                settingsDiv.appendChild(curLabel);
+                settingsDiv.appendChild(document.createElement('br'));
+            }
+        }
+    }
 }

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>TreeController Controller</title>
+    <link rel="stylesheet" href="static/video.css">
 </head>
 <body>
     <h2>TreeController Controller</h2>
@@ -20,9 +21,14 @@
     <div class="select">
     <label for="videoSource">Video source: </label><select id="videoSource"></select>
     </div>
-    <video autoplay muted playsinline></video><br>
-    <button id="capPic">capture image</button><br>
-    <img id="imageCap">
+    <div class="videoViewers">
+        <video class="videoViewer" id="liveView" autoplay muted playsinline></video>
+        <img class="videoViewer" id="imageCap">
+    </div><br />
+    <button id="capPic">capture image</button>
+    <button id="getSettings">get settings</button>
+    <br>
+    <div id="cameraSettings"></div>
 
     <script type="text/javascript" src="static/buttonDriver.js"></script>
     <script type="text/javascript" src="static/cameraController.js"></script>
