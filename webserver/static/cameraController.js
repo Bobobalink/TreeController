@@ -6,6 +6,11 @@ const captureButton = document.getElementById("capPic");
 const sendSettingsButton = document.getElementById("getSettings");
 const settingsDiv = document.getElementById("cameraSettings");
 
+const settingsBlacklist = new Set();
+settingsBlacklist.add('aspectRatio');
+settingsBlacklist.add('width');
+settingsBlacklist.add('height');
+
 let mediaStreamTrack;
 let imageCapture;
 
@@ -105,6 +110,8 @@ function makeSettings(capabilities, settings) {
     for(const name in capabilities) {
         if(!capabilities.hasOwnProperty(name))
             continue;
+        if(settingsBlacklist.has(name)) // skip dangerous settings so I don't accidentally touch them
+            continue;
         const limits = capabilities[name];
         if(typeof limits === 'string') {
             // skip it because it's some weird config id thingy
@@ -116,6 +123,8 @@ function makeSettings(capabilities, settings) {
 
             let selectItem = document.createElement("select");
             selectItem.id = 'select_' + name;
+            if(limits.length === 1) // dont display options with only one choice
+                continue;
             for(const i in limits) {
                 if(!limits.hasOwnProperty(i))
                     continue;
@@ -127,6 +136,13 @@ function makeSettings(capabilities, settings) {
                 }
                 selectItem.appendChild(option);
             }
+
+            selectItem.onchange = () => {
+                let constraint = {};
+                constraint[name] = selectItem.options[selectItem.selectedIndex].value;
+                mediaStreamTrack.applyConstraints({ advanced: [constraint]}).catch(error => console.error('applyConstraints() error:', error));
+            };
+
             settingsDiv.appendChild(nameLabel);
             settingsDiv.appendChild(selectItem);
             settingsDiv.appendChild(document.createElement('br'));
@@ -134,6 +150,8 @@ function makeSettings(capabilities, settings) {
             // it's probably an object with a min and max for a numerical value
             if(limits.hasOwnProperty('max') && limits.hasOwnProperty('min')) {
                 //create a slider doodad for a numerical value
+                let contDiv = document.createElement('div');
+                contDiv.className = 'sliderContainer';
                 let nameLabel = document.createElement('label');
                 nameLabel.innerText = name;
                 nameLabel.for = 'select_' + name;
@@ -168,14 +186,18 @@ function makeSettings(capabilities, settings) {
 
                 slider.oninput = (event) => {
                     curLabel.innerText = (+slider.valueAsNumber.toFixed(2)).toString();
+                    let constraint = {};
+                    constraint[name] = slider.valueAsNumber;
+                    mediaStreamTrack.applyConstraints({ advanced: [constraint]}).catch(error => console.error('applyConstraints() error:', error));
                 };
 
-                settingsDiv.appendChild(nameLabel);
-                settingsDiv.appendChild(lowLabel);
-                settingsDiv.appendChild(slider);
-                settingsDiv.appendChild(highLabel);
-                settingsDiv.appendChild(curLabel);
-                settingsDiv.appendChild(document.createElement('br'));
+                contDiv.appendChild(nameLabel);
+                contDiv.appendChild(lowLabel);
+                contDiv.appendChild(slider);
+                contDiv.appendChild(highLabel);
+                contDiv.appendChild(curLabel);
+                //contDiv.appendChild(document.createElement('br'));
+                settingsDiv.appendChild(contDiv);
             }
         }
     }

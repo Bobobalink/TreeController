@@ -21,3 +21,12 @@ label {
     padding-right: 8px;
     display: inline-block;
 }
+
+.sliderContainer {
+    display: flex;
+    width: 100%;
+}
+
+.slider {
+    flex-grow: 16;
+}
