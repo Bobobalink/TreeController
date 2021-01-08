@@ -3,7 +3,6 @@ const imgElement = document.getElementById("imageCap");
 const audioSelect = document.querySelector('select#audioSource');
 const videoSelect = document.querySelector('select#videoSource');
 const captureButton = document.getElementById("capPic");
-const sendSettingsButton = document.getElementById("getSettings");
 const settingsDiv = document.getElementById("cameraSettings");
 
 const settingsBlacklist = new Set();
@@ -73,22 +72,28 @@ function handleError(error) {
   console.error('Error: ', error);
 }
 
-captureButton.addEventListener('click', capture);
-sendSettingsButton.addEventListener('click', putSettings);
+captureButton.addEventListener('click', () => {capture('manualCap');});
 
-function capture() {
+async function capture(fname) {
     console.log('capturing image');
-    imageCapture.takePhoto()
-        .then(blob => {
-            imgElement.src = URL.createObjectURL(blob);
-            imgElement.onload = () => {
-                URL.revokeObjectURL(this.src);
-            }
-            let xhttp = new XMLHttpRequest();
-            xhttp.open('PUT', 'putBlob', true);
-            xhttp.send(blob);
-        })
-        .catch(error => console.error('takePhoto() error:', error));
+    let tryCapture = async () => {
+        await imageCapture.takePhoto()
+            .then(blob => {
+                imgElement.src = URL.createObjectURL(blob);
+                imgElement.onload = () => {
+                    URL.revokeObjectURL(this.src);
+                }
+                let xhttp = new XMLHttpRequest();
+                xhttp.open('POST', 'saveImage/' + fname, false);
+                xhttp.send(blob);
+            })
+            .catch(async error => {
+                console.error('takePhoto() error:', error);
+                await sleep(100);
+                await tryCapture();
+            });
+    };
+    await tryCapture();
 }
 
 function putSettings() {
@@ -99,7 +104,7 @@ function putSettings() {
     imageCapture.getPhotoCapabilities().then((val) => {out.photoCap = val}).then(() => {
     imageCapture.getPhotoSettings().then((val) => {out.photoSet = val}).then(() => {
         let xhttp = new XMLHttpRequest();
-        xhttp.open('PUT', 'putBlob', true);
+        xhttp.open('POST', 'putBlob', true);
         xhttp.setRequestHeader("Content-type", "application/json")
         xhttp.send(JSON.stringify(out));
     })});

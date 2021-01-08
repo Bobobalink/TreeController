@@ -34,14 +34,14 @@ void handleRoot() {
         let button = buttons[i];\
         button.addEventListener('click', async _ => {\
           let xhttp = new XMLHttpRequest();\
-          xhttp.open('PUT', button.id, true);\
+          xhttp.open('POST', button.id, true);\
           xhttp.send();\
         });\
       }\
       const buttonSend = document.getElementById('setBut');\
       buttonSend.addEventListener('click', async _ => {\
         let xhttp = new XMLHttpRequest();\
-        xhttp.open('PUT', 'calibrate', true);\
+        xhttp.open('POST', 'calibrate', true);\
         xhttp.send(document.getElementById('setInd').value);\
       });\
     </script>\
@@ -91,22 +91,22 @@ void setupWebserver() {
   server.on("/", handleRoot);
   server.onNotFound(handleNotFound);
 
-  server.on("/enableRandomFade", HTTP_PUT, [] () {
+  server.on("/enableRandomFade", HTTP_POST, [] () {
     addStatusMessage("Got randomFade on");
     enableRandomColors();
     server.send(200, "text/plain", "done");
   });
-  server.on("/disableRandomFade", HTTP_PUT, [] () {
+  server.on("/disableRandomFade", HTTP_POST, [] () {
     addStatusMessage("Got randomFade off");
     disableRandomColors();
     server.send(200, "text/plain", "done");
   });
-  server.on("/off", HTTP_PUT, [] () {
+  server.on("/off", HTTP_POST, [] () {
     addStatusMessage("Got strip off");
     turnStripOff(500);
     server.send(200, "text/plain", "done");
   });
-  server.on("/calibrate", HTTP_PUT, handleCalibrate);
+  server.on("/calibrate", HTTP_POST, handleCalibrate);
 
   server.begin();
   addStatusMessage("Webserver setup done");

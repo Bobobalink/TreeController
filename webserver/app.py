@@ -4,6 +4,8 @@ import urllib.parse
 
 app = Flask(__name__)
 
+lightsURL = 'http://192.168.1.90'
+
 
 @app.route('/')
 def index():
@@ -12,9 +14,9 @@ def index():
 
 @app.route('/CORSTrampoline/<endpoint>', methods=['GET', 'POST', 'PUT'])
 def corsTramp(endpoint):
-    url = urllib.parse.urljoin('http://192.168.1.91', endpoint)
-    print(request.args)
-    print(request.data)
+    url = urllib.parse.urljoin(lightsURL, endpoint)
+    # print(request.args)
+    # print(request.data)
     if request.method == 'GET':
         resp = requests.get(url, params=request.args)
     elif request.method == 'POST':
@@ -28,17 +30,29 @@ def corsTramp(endpoint):
     return out
 
 
-@app.route('/calibChase', methods=['PUT', 'POST'])
+@app.route('/calibChase', methods=['POST'])
 def calibChase():
-    url = 'http://192.168.1.91/calibrate'
+    url = urllib.parse.urljoin(lightsURL, 'calibrate')
     for i in range(401):
-        requests.put(url, data=str(i))
+        requests.post(url, data=str(i))
     return 'done'
 
 
-@app.route('/putBlob', methods=['PUT'])
+@app.route('/putBlob', methods=['POST'])
 def putBlob():
     print(request.mimetype)
+    return 'done'
+
+
+@app.route('/saveImage/<name>', methods=['POST'])
+def saveImage(name):
+    # save the image based on the mimetype
+    if 'png' in request.mimetype:
+        filename = 'saved/{}.png'.format(name)
+    elif 'jpg' in request.mimetype or 'jpeg' in request.mimetype:
+        filename = 'saved/{}.jpg'.format(name)
+    with open(filename, 'wb') as f:
+        f.write(request.data)
     return 'done'
 
 
